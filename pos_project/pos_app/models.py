@@ -33,3 +33,11 @@ class SaleItem(models.Model):
     
     def __str__(self):
         return f"{self.quantity} x {self.product.name}"
+    
+
+class Cashier(models.Model):
+    name = models.CharField(max_length=100)
+    pin = models.CharField(max_length=4)  # 4-digit PIN for login
+
+    def __str__(self):
+        return self.name
