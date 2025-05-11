@@ -48,7 +48,8 @@ class SaleSerializer(serializers.ModelSerializer):
         return sale
 
 
+
 class CashierSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cashier
-        fields = ['id', 'name', 'pin']  # Include 'pin' for admin management
+        fields = ['id', 'name']

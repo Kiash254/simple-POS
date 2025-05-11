@@ -34,6 +34,7 @@ class SaleViewSet(viewsets.ModelViewSet):
     serializer_class = SaleSerializer
 
 
+
 class WelcomeView(APIView):
     def get(self, request):
         cashiers = Cashier.objects.all()
@@ -46,14 +47,15 @@ class WelcomeView(APIView):
 
 class CashierLoginView(APIView):
     def post(self, request):
-        name = request.data.get('name')
-        pin = request.data.get('pin')
+        cashier_id = request.data.get('id')  # Get cashier ID from request
+        pin = request.data.get('pin')  # Get PIN from request
 
         try:
-            cashier = Cashier.objects.get(name=name, pin=pin)
+            # Verify cashier ID and PIN
+            cashier = Cashier.objects.get(id=cashier_id, pin=pin)
             return Response({"message": f"Welcome, {cashier.name}!"})
         except Cashier.DoesNotExist:
-            return Response({"error": "Invalid name or PIN"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"error": "Invalid ID or PIN"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class CashierManagementView(APIView):

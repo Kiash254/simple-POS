@@ -5,13 +5,13 @@ import LOGO from './images/powerstart.png';
 
 function SignUpPage() {
   const [cashiers, setCashiers] = useState([]); // State to store the list of cashiers
-  const [selectedName, setSelectedName] = useState('');
-  const [pin, setPin] = useState('');
+  const [selectedId, setSelectedId] = useState(''); // Store selected cashier ID
+  const [pin, setPin] = useState(''); // Store entered PIN
   const navigate = useNavigate();
 
   // Fetch the list of cashiers from the backend
   useEffect(() => {
-    fetch('/api/welcome/') // Replace with your backend endpoint
+    fetch('http://127.0.0.1:8000/api/welcome/') // Replace with your backend endpoint
       .then((response) => response.json())
       .then((data) => setCashiers(data.cashiers))
       .catch((error) => console.error('Error fetching cashiers:', error));
@@ -21,12 +21,12 @@ function SignUpPage() {
     e.preventDefault();
 
     // Logic for verifying the PIN (e.g., API call)
-    fetch('/api/login/', {
+    fetch('http://127.0.0.1:8000/api/login/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name: selectedName, pin }),
+      body: JSON.stringify({ id: selectedId, pin }), // Send cashier ID and PIN
     })
       .then((response) => {
         if (response.ok) {
@@ -42,8 +42,8 @@ function SignUpPage() {
     <div className="signup-page">
       <div className="text-center">
         <img src={LOGO} alt="Power Star Supermarket" className="logo" />
-        <h1>Welcome to Power Star Supermarket</h1>
-        <p>Please select your name and enter your PIN to continue</p>
+        <h4> Power Star Supermarket POS</h4>
+        <p>Stuff Only Please Select Your name and enter Provided Pin by Admin</p>
       </div>
       <form onSubmit={handleSignUp} className="signup-form">
         <div className="mb-3">
@@ -51,13 +51,13 @@ function SignUpPage() {
           <select
             className="form-control"
             id="name"
-            value={selectedName}
-            onChange={(e) => setSelectedName(e.target.value)}
+            value={selectedId}
+            onChange={(e) => setSelectedId(e.target.value)} // Store selected cashier ID
             required
           >
             <option value="">Select your name</option>
             {cashiers.map((cashier) => (
-              <option key={cashier.id} value={cashier.name}>
+              <option key={cashier.id} value={cashier.id}>
                 {cashier.name}
               </option>
             ))}
@@ -70,7 +70,7 @@ function SignUpPage() {
             className="form-control"
             id="pin"
             value={pin}
-            onChange={(e) => setPin(e.target.value)}
+            onChange={(e) => setPin(e.target.value)} // Store entered PIN
             required
           />
         </div>
